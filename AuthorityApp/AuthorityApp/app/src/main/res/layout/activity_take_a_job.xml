@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context="it.polimi.guardian.authorityapp.TakeAJobActivity">
+
+    <LinearLayout
+        android:id="@+id/ln_btn_holder"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/spacing_small"
+        android:background="@color/gray_super_light">
+
+        <Button
+            android:id="@+id/btn_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:text="@string/refresh"
+            style="@style/button_refresh_text_transparent"
+            />
+        <Button
+            android:id="@+id/btn_return_job"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:singleLine="true"
+            android:text="@string/cancel_current_job"
+            style="@style/button_cancel_text_transparent"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_jobs_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ln_btn_holder"
+        android:paddingLeft="@dimen/spacing_normal"
+        android:textAllCaps="true"
+        android:text="@string/job_list"
+        style="@style/app_text_normal"
+        />
+
+    <View android:id="@+id/job_list_header_divider"
+        android:layout_below="@id/tv_jobs_list"
+        android:layout_marginLeft="@dimen/spacing_tiny"
+        android:layout_marginRight="@dimen/spacing_tiny"
+        android:layout_marginBottom="@dimen/spacing_tiny"
+        style="@style/divider_black"
+        />
+
+    <ListView
+        android:id="@+id/list_of_jobs"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/job_list_header_divider"
+        />
+    <TextView
+        android:id="@+id/tv_list_is_empty"
+        android:text="@string/list_is_empty"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:textSize="25sp"
+        android:gravity="center_vertical|center_horizontal"/>
+
+</RelativeLayout>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Authority Guardian</string>
+    <string name="action_settings">Settings</string>
+    <string name="username">Username</string>
+
+    <string name="fire">Fire</string>
+    <string name="emergency">Emergency</string>
+    <string name="police">Police</string>
+
+
+    <string name="filter_events">Filter events</string>
+    <string name="refresh_map">Refresh map</string>
+    <string name="phone_num">phone number:</string>
+    <string name="alert">Alert!</string>
+	<string name="description">Description:</string>
+
+	<string name="address">Address:</string>
+	<string name="date">Date:</string>
+	<string name="details">Details</string>
+	<string name="list_is_empty">The list is empty.</string>
+	
+
+    <string-array name="UserTypes">
+        <item>Emergency staff</item>
+        <item>Fire brigade staff</item>
+        <item>Police staff</item>
+    </string-array>
+    <string-array name="JobStatus">
+        <item>Solved</item>
+        <item>False alarm</item>
+        <item>Impossible to solve</item>
+    </string-array>
+
+    <string name="type_prompt">Choose staff type: </string>
+    <string name="job_status_prompt">Choose job status: </string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="take_a_job">Take a job</string>
+    <string name="review_a_job">Review a job</string>
+    <string name="highscores">Highscores</string>
+    <string name="job_list">Job list</string>
+    <string name="refresh">Refresh</string>
+    <string name="review_the_job">Review the job</string>
+
+
+    <string name="dummy_datetime">12:00 01/01/2015</string>
+    <string name="dummy_countrycode">+39</string>
+    <string name="dummy_address">Via Gaetano Strambio 23, 20133 Milano, Italy</string>
+    <string name="dummy_event_descr">fire in the cinema</string>
+    <string name="location_accuracy">Location Accuracy:</string>
+    <string name="dummy_phone_numb">333 333</string>
+
+    <string name="job_review">Job review</string>
+    <string name="write_review">Write review</string>
+    <string name="ranking">Ranking</string>
+    <string name="cancel_current_job">Cancel current job</string>
+    <string name="take_job">Take job</string>
+    <string name="show_on_map">Show on map</string>
+
+
+</resources>
