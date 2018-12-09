@@ -8,12 +8,18 @@ android {
         applicationId "it.polimi.guardian.citizenapp"
         minSdkVersion 14
         targetSdkVersion 26
+        multiDexEnabled true
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            multiDexEnabled true
+        }
+
+        debug {
+            multiDexEnabled true
         }
     }
 }
@@ -23,4 +29,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services:+'
     implementation 'com.github.hotchemi:permissionsdispatcher:3.1.0'
     annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:3.1.0'
+    implementation 'com.android.support:multidex:1.0.3'
 }

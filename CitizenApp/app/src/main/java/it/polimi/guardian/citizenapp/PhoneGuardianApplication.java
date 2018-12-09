@@ -9,7 +9,7 @@ import android.content.Context;
 
 
 
-public class PhoneGuardianApplication extends Application
+public class PhoneGuardianApplication extends android.support.multidex.MultiDexApplication
 {
     private static PhoneGuardianApplication instance; //singleton klasa
 
