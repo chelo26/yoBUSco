@@ -229,7 +229,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
         String jsonStringCredentials="";
         // credentials from file
         try{
-            FileHelper fileHelper = new FileHelper();
+            FileHelper fileHelper = new FileHelper(this);
             jsonStringCredentials = fileHelper.readFromFile("credentials.txt");
             if(jsonStringCredentials.equals("") || jsonStringCredentials.equals("{}")){//if file didn't exist
 
@@ -251,7 +251,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
         String jsonStringCredentials="";
         // credentials from file
         try{
-            FileHelper fileHelper = new FileHelper();
+            FileHelper fileHelper = new FileHelper(this);
             //make credentials object and put it inside JSONObject
             JSONObject jobj = new JSONObject();
             Credentials cred = new Credentials();
@@ -279,7 +279,7 @@ public class RegisterActivity extends Activity implements OnClickListener {
         String jsonStringCredentials="";
         // credentials from file
         try{
-            FileHelper fileHelper = new FileHelper();
+            FileHelper fileHelper = new FileHelper(this);
             jsonStringCredentials = fileHelper.readFromFile("credentials.txt");
             if(!(jsonStringCredentials.equals("") || jsonStringCredentials.equals("{}"))) {//there are other credentials data  already in the file
                 JSONObject jObj;

@@ -15,18 +15,25 @@ package it.polimi.guardian.citizenapp;
         import java.io.OutputStreamWriter;
 
         import android.app.Activity;
-        import android.os.Environment;
+        import android.content.Context;
         import android.util.Log;
         import android.widget.Toast;
 
 public class FileHelper extends Activity{
+
+    private Context context;
+
+    public FileHelper( Context context){
+        this.context = context;
+    }
+
 
     public void writeToFile(String jsonString, String filename) {
 
         OutputStream outputStream = null;
 
         try {
-            File dir = getAppDirectory("PhoneGuardian");
+            File dir = getAppDirectory();
             File file = new File(dir, filename);
             String filepath = file.getAbsolutePath();
             FileOutputStream fileOutputStream = new FileOutputStream(file);
@@ -65,7 +72,7 @@ public class FileHelper extends Activity{
         String ret = "";
 
         try {
-            File dir = getAppDirectory("PhoneGuardian");
+            File dir = getAppDirectory();
             File file = new File(dir, filename);
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             String receiveString = "";
@@ -87,41 +94,15 @@ public class FileHelper extends Activity{
 
         return ret;
     }
-    public  File getAppDirectory(String appFolderName) {
-        File appDirectory = null;
-
-        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
-
-            File sdCard = Environment.getExternalStorageDirectory();
-
-            appDirectory = new File(
-                    sdCard, 									//sd kartica
-                    appFolderName								//+ ime foldera
-            );
-
-            if (appDirectory != null){
-                if (! appDirectory.mkdirs()){ //kreira direktorijum imenom fajla storageDir
-
-                    //true if the directory was created,
-                    //false on failure or if the directory already existed.
-                    if (! appDirectory.exists()){
-                        //ako direktorijum ne postoji
-                        Toast.makeText(this, "Neuspesno kreiranje direktorijuma aplikacije.",Toast.LENGTH_SHORT).show();
-                        return null;
-                    }
-                }
-            }
-
-        }
-        else{
-            Toast.makeText(this, "SD kartica nije dostupna za ČITANJE/UPIS.",Toast.LENGTH_SHORT).show();
-        }
-
-        return appDirectory;
+    public  File getAppDirectory() {
+        File defaultAppDirectory = context.getFilesDir();
+        String defaultAppDirectoryPath = defaultAppDirectory.getPath();
+        Log.d("App directory", defaultAppDirectoryPath);
+        return defaultAppDirectory;
     }
     public String getAbsolutePath(String filename){
 
-        File dir = getAppDirectory("PhoneGuardian");
+        File dir = getAppDirectory();
         File file = new File(dir, filename);
         String filepath = file.getAbsolutePath();
         return filepath;
