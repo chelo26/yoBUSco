@@ -1,26 +1,13 @@
 package it.polimi.guardian.citizenapp;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
-
+import android.location.LocationListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
+import android.provider.Settings;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -31,7 +18,6 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
-
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -47,7 +33,18 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
-public class AddLocationActivity extends FragmentActivity implements OnClickListener
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import Services.LocationService;
+
+public class AddLocationActivity extends FragmentActivity implements OnClickListener, LocationListener
         ,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks
 {
     EventLocation inputLocation = new EventLocation();
@@ -68,6 +65,7 @@ public class AddLocationActivity extends FragmentActivity implements OnClickList
     protected GoogleApiClient mGoogleApiClient;
 
     private PlaceAutocompleteAdapter mAdapter;
+    private LocationService locationService;
 
     LatLngBounds BOUNDS_GREATER;
 
@@ -83,6 +81,9 @@ public class AddLocationActivity extends FragmentActivity implements OnClickList
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addlocation_activity);
+
+		requestToTurnOnGps();
+        locationService = LocationService.getLocationManager(this);
 
         if (mGoogleApiClient == null) {
             rebuildGoogleApiClient();
@@ -100,21 +101,39 @@ public class AddLocationActivity extends FragmentActivity implements OnClickList
 
 		time.setText( new SimpleDateFormat("HH:mm dd/MM/yyyy").format(cal.getTime()));
 
-		Location location = getlocation();
-		double latitude = 45.4786;
-		double longitude = 9.22797;
-		float accuracy = 30;
-		String address = "Default address";
-		if(location!=null){
+		double defaultLatitude = 45.4786;
+		double defaultLongitude = 9.22797;
+		float defaultAccuracy = 30;
 
-			latitude = location.getLatitude();
-			longitude = location.getLongitude();
-			accuracy = location.getAccuracy();
-		}
-        currentLocation.setLatitude(latitude);
-        currentLocation.setLongitude(longitude);
-        currentLocation.setAccuracy(accuracy);
+        currentLocation.setLatitude(defaultLatitude);
+        currentLocation.setLongitude(defaultLongitude);
+        currentLocation.setAccuracy(defaultAccuracy);
 
+        BOUNDS_GREATER = new LatLngBounds(new LatLng(defaultLatitude-0.5, defaultLongitude-0.5),
+                                          new LatLng(defaultLatitude+0.5, defaultLongitude+0.5));
+
+        mAdapter = new PlaceAutocompleteAdapter(this, R.layout.single_location_search_item,BOUNDS_GREATER, null);
+    }
+
+    public void requestToTurnOnGps()  {
+        int off = 0;
+        try {
+            off = Settings.Secure.getInt(getContentResolver(), Settings.Secure.LOCATION_MODE);
+        } catch (Settings.SettingNotFoundException e) {
+            Log.d("GPS turning on", "error"+e);
+            e.printStackTrace();
+        }
+        if(off==0){
+            Intent onGPS = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(onGPS);
+        }
+    }
+
+    private void populateAddress(Location location)
+    {
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        String address = "";
         BOUNDS_GREATER = new LatLngBounds(new LatLng(latitude-0.5, longitude-0.5),
                 new LatLng(latitude+0.5, longitude+0.5));
 
@@ -122,12 +141,9 @@ public class AddLocationActivity extends FragmentActivity implements OnClickList
         mAdapter.setGoogleApiClient(mGoogleApiClient);
         mAutocompleteView.setAdapter(mAdapter);
 
-//		(new GetAddressTask(this)).execute(location);
-        currentLocation.setAddress(address);//////ADDED JUST TO WORK, REMOVE AND FIX PREVIOUS
+        (new GetAddressTask(this)).execute(location);
 
         //findViewById(R.id.layout_add_location).setOnTouchListener(hideKeyboardlistener);
-
-
     }
 
 
@@ -318,102 +334,81 @@ public class AddLocationActivity extends FragmentActivity implements OnClickList
 	            break;
 	    }
 	}
-	
-	public Location getlocation() {
 
-	    LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-	    List<String> providers = lm.getProviders(true);
+    @Override
+    public void onLocationChanged(Location location) {
+        currentLocation.setLatitude(location.getLatitude());
+        currentLocation.setLongitude(location.getLongitude());
+        currentLocation.setAccuracy(location.getAccuracy());
+        populateAddress(location);
+    }
 
-	    Location l = null;
-	    for (int i = 0; i < providers.size(); i++) {
-			try {
-				l = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			} catch (SecurityException e) {
-				Toast.makeText(this.getApplicationContext(), "GPS disabled", Toast.LENGTH_SHORT); // lets the user know there is a problem with the gps
-			}
-	        if (l != null)
-	            break;
-	    }
-	   
-	    return l;
-	}
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
 
+    }
 
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
 
     private class GetAddressTask extends AsyncTask<Location, Void, String>
-		{
-			Context mContext;
-	        public GetAddressTask(Context context) {
-	            super();
-	            mContext = context;
-	        }
-	        
-	        @Override
-	        protected String doInBackground(Location... params)
-	        {
-	            Geocoder geocoder =
-	                    new Geocoder(mContext, Locale.getDefault());
-	            // Get the current location from the input parameter list
-	            Location loc = params[0];
-	            // Create a list to contain the result address
-	            List<Address> addresses = null;
-	            try {
-	                /*
-	                 * Return 1 address.
-	                 */
-	                addresses = geocoder.getFromLocation(loc.getLatitude(),
-	                        loc.getLongitude(), 1);
+    {
+        Context mContext;
+        public GetAddressTask(Context context) {
+            super();
+            mContext = context;
+        }
 
-	            }
-	            catch (IOException e1)
-	            {
-	            		Log.e("LocationSampleActivity","IO Exception in getFromLocation()");
-	            		e1.printStackTrace();
-	            		return ("IO Exception trying to get address");
-	            }
-	            catch (IllegalArgumentException e2)
-	            {
-	            // Error message to post in the log
-			            String errorString = "Illegal arguments " +
-			                    Double.toString(loc.getLatitude()) +
-			                    " , " +
-			                    Double.toString(loc.getLongitude()) +
-			                    " passed to address service";
-			            Log.e("LocationSampleActivity", errorString);
-			            e2.printStackTrace();
-			            return errorString;
-	            }
-	            // If the reverse geocode returned an address
-	            if (addresses != null && addresses.size() > 0)
-	            {
-	                // Get the first address
-	                Address address = addresses.get(0);
-	                /*
-	                 * Format the first line of address (if available),
-	                 * city, and country name.
-	                 */
-	                String addressText = String.format(
-	                        "%s, %s",
-	                        // If there's a street address, add it
-	                        address.getMaxAddressLineIndex() > 0 ?
-	                                address.getAddressLine(0) : "",
-	                        // Locality is usually a city
-	                        address.getLocality());
-	                // Return the text
-	                return addressText;
-	            }
-	            else 
-	            {
-	                return "No address found";
-	            }
-	        }
-	
-			@Override
-			protected void onPostExecute(String addr) {
-                currentLocation.setAddress(addr);
+        @Override
+        protected String doInBackground(Location... params)
+        {
+            // Get the current location from the input parameter list
+            Location loc = params[0];
+            // Create a list to contain the result address
+            List<Address> addresses = null;
+            try {
+                //https://maps.google.com/maps/api/geocode/json?latlng=51.5707487,-0.2075289&sensor=true&key=AIzaSyCnqx-XHW1FzF5FrsgbZSzLMibBLb2dkWE
+                String url = "https://maps.google.com/maps/api/geocode/json?latlng="+loc.getLatitude()+","+loc.getLongitude()+"&sensor=true&key=AIzaSyCnqx-XHW1FzF5FrsgbZSzLMibBLb2dkWE";
+
+                String location_string = "";
+                int retryCount = 0;
+            while(location_string.equals("") && retryCount < 5){
+                try {
+                    retryCount = retryCount + 1;
+                    JSONObject returnedJson = JSONParser.makeHttpsRequest(url, "GET", null);
+                    JSONObject resultsJson = returnedJson.getJSONArray("results").getJSONObject(0);
+                    location_string = resultsJson.getString("formatted_address");
+                    Log.d("test", "formattted address:" + location_string);
+                    if(location_string=="")
+                        Thread.sleep(200);
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            return location_string;
+            }
+            catch (Exception e)
+            {
+                Log.e("LocationSampleActivity","Exception in url get address from location");
+                e.printStackTrace();
+                return ("Exception trying to get address");
             }
 
-		}
+        }
+
+        @Override
+        protected void onPostExecute(String addr) {
+            currentLocation.setAddress(addr);
+        }
+
+    }
 		
 		class AddLocation extends AsyncTask<String, String, String> {
 		   	 
@@ -524,6 +519,4 @@ public class AddLocationActivity extends FragmentActivity implements OnClickList
 
     };
 
-
-	
 }
