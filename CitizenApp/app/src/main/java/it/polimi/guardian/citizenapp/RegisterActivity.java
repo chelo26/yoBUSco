@@ -72,11 +72,12 @@ public class RegisterActivity extends Activity implements OnClickListener {
             u.setPhone(argss[0]);
             u.setUsername(argss[1]);
 
-            Intent i = new Intent(getApplicationContext(),AlertActivity.class );
+//            Intent i = new Intent(getApplicationContext(),AlertActivity.class );
+            Intent i = new Intent(getApplicationContext(),SearchActivity.class );
             i.addCategory(Intent.CATEGORY_HOME);
             i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | i.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(i); // Launch the AlertActivity
-            finish();         // Close down the RegistersActivity
+            startActivity(i); // Launch the next activity
+            finish();         // Close down the RegisterActivity
         }
         else {
 

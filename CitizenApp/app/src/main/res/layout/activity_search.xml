@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_register"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".SearchActivity"
+    >
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_main_blur"
+        android:scaleType="centerCrop"
+        tools:ignore="ContentDescription"
+        />
+
+    <LinearLayout
+        android:id="@+id/bus_search_form"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/spacing_large"
+        android:background="@drawable/bg_white_oval"
+        android:orientation="vertical"
+        >
+
+        <Spinner
+            android:id="@+id/spinner_bus_search_from"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/bus_search_city_array"
+            android:prompt="@string/bus_search_from" />
+
+        <Spinner
+            android:id="@+id/spinner_bus_search_to"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/bus_search_city_array"
+            android:prompt="@string/bus_search_to" />
+
+        <Button
+            android:id="@+id/btn_select_departure_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/bus_departure_date"
+            android:onClick="showDatePicker" />
+
+        <Button
+            android:id="@+id/btn_select_return_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/bus_return_date"
+            android:onClick="showDatePicker" />
+
+        <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+        android:id="@+id/myRadioGroup"
+        android:background="#abf234"
+        android:checkedButton="@+id/rb_bus_search_return" >
+
+        <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rb_bus_search_return"
+        android:text="@string/bus_search_return" />
+        <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rb_bus_search_one_way"
+        android:text="@string/bus_search_one_way" />
+    </RadioGroup>
+
+    <Spinner
+        android:id="@+id/spinner_ticket_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/bus_ticket_number_array"
+        android:prompt="@string/bus_ticket_number_prompt" />
+
+
+
+        <Button
+            android:id="@+id/btn_bus_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/bus_search"
+            android:onClick="searchTickets" />
+
+</LinearLayout>
+</RelativeLayout>

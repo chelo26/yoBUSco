@@ -22,4 +22,5 @@
     <style name="app_ActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
         <item name="android:background">@color/blue_light</item>
     </style>
+
 </resources>

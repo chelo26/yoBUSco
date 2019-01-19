@@ -1,12 +1,6 @@
 package it.polimi.guardian.citizenapp;
 
-import android.app.Application;
 import android.content.Context;
-
-/**
- * Created by ntasic on 5/8/14.
- */
-
 
 
 public class PhoneGuardianApplication extends android.support.multidex.MultiDexApplication
