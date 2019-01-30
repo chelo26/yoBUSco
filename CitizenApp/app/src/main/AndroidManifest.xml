@@ -68,7 +68,7 @@
         </activity>
         <activity
             android:name=".AlertActivity"
-            android:theme="@style/AppThemeNoActionBar"></activity>
+            android:theme="@style/AppThemeNoActionBar" />
         <activity
             android:name=".AddLocationActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -98,23 +98,26 @@
         </activity>
         <activity
             android:name=".MarkerActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".AddCommentActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ViewCommentsActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ViewMarkerDetailsActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".ListFilterActivity"
-            android:theme="@style/AppTheme"></activity>
-
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".SearchActivity"
-            android:theme="@style/Theme.AppCompat" ></activity>
+            android:theme="@style/Theme.AppCompat" />
+
+        <activity
+            android:name=".SearchResultsActivity"
+            android:theme="@style/AppTheme"></activity>
 
         <service android:name=".NotificationService" />
     </application>

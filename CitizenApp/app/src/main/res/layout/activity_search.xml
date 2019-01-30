@@ -1,5 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_register"
+    android:id="@+id/layout_search"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
@@ -45,7 +45,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:text="@string/bus_departure_date"
-            android:onClick="showDatePicker" />
+            android:onClick="showDepartureDatePicker" />
 
         <Button
             android:id="@+id/btn_select_return_date"
@@ -55,7 +55,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="24dp"
             android:text="@string/bus_return_date"
-            android:onClick="showDatePicker" />
+            android:onClick="showReturnDatePicker" />
 
         <RadioGroup
         android:layout_width="wrap_content"
